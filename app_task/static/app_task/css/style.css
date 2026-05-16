@@ -1,0 +1,560 @@
+/* ══════════════════════════════════════════
+   TASK PAI D'ÉGUA — style.css
+   Organização:
+   1. Variáveis & Reset
+   2. Layout base
+   3. Cabeçalho
+   4. Topo (pesquisa, ações, calendário)
+   5. Lista de tarefas
+   6. Botões das tarefas
+   7. Modais (overlay, modal, formulário)
+   8. Modais de confirmação e sucesso
+   9. Animações
+══════════════════════════════════════════ */
+
+/* ── 1. VARIÁVEIS & RESET ── */
+:root {
+  --bg:       #0e0e10;
+  --surface:  #18181c;
+  --surface2: #222228;
+  --border:   #2e2e38;
+  --accent:   #f5c842;
+  --accent2:  #e8763a;
+  --danger:   #e84545;
+  --success:  #3adb76;
+  --text:     #f0f0f0;
+  --muted:    #7a7a8c;
+  --radius:   10px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background:  var(--bg);
+  color:       var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height:  100vh;
+  padding:     2rem 1.5rem;
+}
+
+/* ── 2. LAYOUT BASE ── */
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* ── 3. CABEÇALHO ── */
+.page-title h1 {
+  font-family:    'Bebas Neue', sans-serif;
+  font-size:      clamp(2.8rem, 6vw, 5rem);
+  letter-spacing: 0.05em;
+  line-height:    1;
+  margin-bottom:  2rem;
+
+  /* Gradiente no texto */
+  background:              linear-gradient(135deg, var(--accent), var(--accent2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip:         text;
+}
+
+/* ── 4. TOPO ── */
+.topo {
+  display:       flex;
+  gap:           1.5rem;
+  flex-wrap:     wrap;
+  align-items:   flex-start;
+  margin-bottom: 2rem;
+}
+
+/* Lado esquerdo */
+.lado-esquerdo {
+  flex:           1;
+  min-width:      260px;
+  display:        flex;
+  flex-direction: column;
+  gap:            1rem;
+}
+
+/* Pesquisa */
+.pesquisa {
+  display:       flex;
+  background:    var(--surface);
+  border:        1px solid var(--border);
+  border-radius: var(--radius);
+  overflow:      hidden;
+}
+
+.pesquisa input {
+  flex:        1;
+  background:  transparent;
+  border:      none;
+  outline:     none;
+  color:       var(--text);
+  padding:     0.65rem 1rem;
+  font-family: 'DM Sans', sans-serif;
+  font-size:   0.9rem;
+  letter-spacing: 0.04em;
+}
+
+.pesquisa input::placeholder {
+  color: var(--muted);
+}
+
+.pesquisa button {
+  background:  var(--accent);
+  border:      none;
+  cursor:      pointer;
+  padding:     0.65rem 1.1rem;
+  font-size:   1rem;
+  transition:  background 0.2s;
+}
+
+.pesquisa button:hover {
+  background: var(--accent2);
+}
+
+/* Botões de ação */
+.acoes {
+  display:   flex;
+  gap:       0.75rem;
+  flex-wrap: wrap;
+}
+
+.acoes button {
+  background:     linear-gradient(135deg, var(--accent), var(--accent2));
+  border:         none;
+  color:          #111;
+  font-family:    'Bebas Neue', sans-serif;
+  font-size:      1.05rem;
+  letter-spacing: 0.08em;
+  padding:        0.65rem 1.4rem;
+  border-radius:  var(--radius);
+  cursor:         pointer;
+  transition:     opacity 0.2s, transform 0.1s;
+}
+
+.acoes button:hover  { opacity: 0.88; transform: translateY(-1px); }
+.acoes button:active { transform: translateY(0); }
+
+/* ── CALENDÁRIO INTERATIVO ── */
+.calendario {
+  background:    var(--surface);
+  border:        1px solid var(--border);
+  border-radius: var(--radius);
+  padding:       1rem 1.1rem;
+  min-width:     230px;
+}
+
+.calendario-header {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     center;
+  font-family:     'Bebas Neue', sans-serif;
+  font-size:       1rem;
+  letter-spacing:  0.1em;
+  color:           var(--accent);
+  margin-bottom:   0.75rem;
+}
+
+/* Botões de navegar mês */
+.cal-nav {
+  background:  transparent;
+  border:      none;
+  color:       var(--accent);
+  font-size:   1.5rem;
+  cursor:      pointer;
+  line-height: 1;
+  padding:     0 0.3rem;
+  transition:  color 0.2s;
+}
+.cal-nav:hover { color: var(--accent2); }
+
+/* Dias da semana */
+.cal-dias-semana {
+  display:               grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom:         0.3rem;
+}
+.cal-dias-semana span {
+  text-align:  center;
+  font-size:   0.65rem;
+  color:       var(--muted);
+  font-weight: 600;
+  padding:     0.1rem 0;
+}
+
+/* Grade de dias */
+.cal-grid {
+  display:               grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap:                   2px;
+}
+
+.cal-dia {
+  text-align:    center;
+  font-size:     0.78rem;
+  padding:       0.3rem 0.1rem;
+  border-radius: 5px;
+  cursor:        pointer;
+  transition:    background 0.15s, color 0.15s;
+  color:         var(--text);
+  border:        1px solid transparent;
+}
+.cal-dia:hover       { background: var(--surface2); border-color: var(--border); }
+.cal-dia.outro-mes   { color: var(--muted); }
+.cal-dia.hoje        { border-color: var(--accent); color: var(--accent); font-weight: 700; }
+.cal-dia.selecionado { background: var(--accent); color: #111; font-weight: 700; }
+.cal-dia.tem-tarefa::after {
+  content:       '';
+  display:       block;
+  width:         4px;
+  height:        4px;
+  background:    var(--accent2);
+  border-radius: 50%;
+  margin:        1px auto 0;
+}
+
+/* Rodapé do calendário */
+.cal-rodape {
+  display:         flex;
+  justify-content: space-between;
+  margin-top:      0.6rem;
+  gap:             0.4rem;
+}
+.cal-hoje,
+.cal-limpar {
+  flex:          1;
+  background:    transparent;
+  border:        1px solid var(--border);
+  color:         var(--muted);
+  font-family:   'DM Sans', sans-serif;
+  font-size:     0.72rem;
+  padding:       0.3rem 0.5rem;
+  border-radius: 5px;
+  cursor:        pointer;
+  transition:    border-color 0.2s, color 0.2s;
+}
+.cal-hoje:hover   { border-color: var(--accent); color: var(--accent); }
+.cal-limpar:hover { border-color: var(--danger);  color: var(--danger); }
+
+/* ── 5. LISTA DE TAREFAS ── */
+.tarefas-box {
+  background:    var(--surface);
+  border:        1px solid var(--border);
+  border-radius: var(--radius);
+  padding:       1.5rem;
+}
+
+.tarefas-box h2 {
+  font-family:    'Bebas Neue', sans-serif;
+  font-size:      1.8rem;
+  letter-spacing: 0.1em;
+  color:          var(--accent);
+  margin-bottom:  1.25rem;
+}
+
+#listaTarefas {
+  display:        flex;
+  flex-direction: column;
+  gap:            1rem;
+}
+
+.tarefa {
+  background:    var(--surface2);
+  border:        1px solid var(--border);
+  border-radius: var(--radius);
+  padding:       1.1rem 1.25rem;
+  position:      relative;
+  transition:    border-color 0.2s, transform 0.15s;
+  animation:     slideIn 0.3s ease;
+}
+
+.tarefa:hover {
+  border-color: var(--accent);
+  transform:    translateY(-2px);
+}
+
+.tarefa h3 {
+  font-size:     1.05rem;
+  font-weight:   600;
+  margin-bottom: 0.35rem;
+}
+
+.tarefa p {
+  font-size:   0.88rem;
+  color:       var(--muted);
+  line-height: 1.5;
+}
+
+.tarefa p strong {
+  color: var(--text);
+}
+
+/* Status */
+.status {
+  margin-top:     0.5rem;
+  font-size:      0.82rem;
+  font-weight:    600;
+  letter-spacing: 0.05em;
+}
+
+.pendente  { color: var(--accent2); }
+.concluido { color: var(--success); }
+.atrasado  { color: var(--danger); }
+
+/* ── 6. BOTÕES DAS TAREFAS ── */
+.botoes-tarefa {
+  display:    flex;
+  gap:        0.5rem;
+  margin-top: 0.85rem;
+  flex-wrap:  wrap;
+}
+
+.botoes-tarefa button {
+  font-family:    'DM Sans', sans-serif;
+  font-size:      0.8rem;
+  font-weight:    600;
+  padding:        0.42rem 0.9rem;
+  border-radius:  6px;
+  border:         none;
+  cursor:         pointer;
+  letter-spacing: 0.03em;
+  transition:     opacity 0.2s, transform 0.1s;
+}
+
+.botoes-tarefa button:hover {
+  opacity:   0.82;
+  transform: translateY(-1px);
+}
+
+.editar  { background: #2d4ff5; color: #fff; }
+.remover { background: var(--danger);  color: #fff; }
+.concluir{ background: var(--success); color: #111; }
+.ver     { background: #444; color: #fff; }
+
+/* ── 7. MODAIS ── */
+
+/* Overlay */
+.overlay {
+  display:         none;
+  position:        fixed;
+  inset:           0;
+  background:      rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index:         100;
+  justify-content: center;
+  align-items:     center;
+  animation:       fadeIn 0.2s ease;
+}
+
+.overlay.ativo {
+  display: flex;
+}
+
+/* Caixa do modal */
+.modal {
+  background:    var(--surface);
+  border:        1px solid var(--border);
+  border-radius: 14px;
+  padding:       2rem;
+  width:         100%;
+  max-width:     440px;
+  box-shadow:    0 20px 60px rgba(0, 0, 0, 0.6);
+  position:      relative;
+  animation:     popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Modificadores de tamanho */
+.modal--estreito { max-width: 360px; }
+.modal--mini     { max-width: 320px; }
+.modal--centro   { text-align: center; }
+
+/* Título do modal */
+.modal-titulo {
+  font-family:    'Bebas Neue', sans-serif;
+  font-size:      1.7rem;
+  letter-spacing: 0.08em;
+  color:          var(--accent);
+  margin-bottom:  1.25rem;
+}
+
+/* Botão fechar */
+.fechar-modal {
+  position:    absolute;
+  top:         1rem;
+  right:       1rem;
+  background:  transparent;
+  border:      none;
+  color:       var(--muted);
+  font-size:   1.3rem;
+  cursor:      pointer;
+  line-height: 1;
+  transition:  color 0.2s;
+}
+
+.fechar-modal:hover {
+  color: var(--danger);
+}
+
+/* Grupos de formulário */
+.form-grupo {
+  display:        flex;
+  flex-direction: column;
+  gap:            0.35rem;
+  margin-bottom:  1rem;
+}
+
+.form-grupo label {
+  font-size:      0.82rem;
+  color:          var(--muted);
+  font-weight:    500;
+  letter-spacing: 0.04em;
+}
+
+.form-grupo input,
+.form-grupo textarea,
+.form-grupo select {
+  background:    var(--surface2);
+  border:        1px solid var(--border);
+  border-radius: 7px;
+  color:         var(--text);
+  font-family:   'DM Sans', sans-serif;
+  font-size:     0.9rem;
+  padding:       0.6rem 0.9rem;
+  outline:       none;
+  transition:    border-color 0.2s;
+  resize:        none;
+}
+
+.form-grupo input:focus,
+.form-grupo textarea:focus,
+.form-grupo select:focus {
+  border-color: var(--accent);
+}
+
+.form-grupo textarea {
+  min-height: 80px;
+}
+
+.form-grupo select option {
+  background: var(--surface2);
+}
+
+/* Ações do formulário */
+.form-acoes {
+  display:         flex;
+  justify-content: flex-end;
+  gap:             0.75rem;
+  margin-top:      0.5rem;
+}
+
+.form-acoes--centro {
+  justify-content: center;
+}
+
+/* Botão cancelar */
+.btn-cancelar {
+  background:     transparent;
+  border:         1px solid var(--border);
+  color:          var(--muted);
+  font-family:    'DM Sans', sans-serif;
+  font-size:      0.88rem;
+  padding:        0.55rem 1.2rem;
+  border-radius:  7px;
+  cursor:         pointer;
+  transition:     border-color 0.2s, color 0.2s;
+}
+
+.btn-cancelar:hover {
+  border-color: var(--danger);
+  color:        var(--danger);
+}
+
+/* Botão salvar */
+.btn-salvar {
+  background:     linear-gradient(135deg, var(--accent), var(--accent2));
+  border:         none;
+  color:          #111;
+  font-family:    'Bebas Neue', sans-serif;
+  font-size:      1rem;
+  letter-spacing: 0.07em;
+  padding:        0.55rem 1.5rem;
+  border-radius:  7px;
+  cursor:         pointer;
+  transition:     opacity 0.2s;
+}
+
+.btn-salvar:hover { opacity: 0.85; }
+
+.btn-salvar--largo { min-width: 120px; }
+
+/* ── 8. MODAIS DE CONFIRMAÇÃO E SUCESSO ── */
+.modal-confirm-icone {
+  font-size:     2.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.modal-confirm-msg {
+  color:         var(--muted);
+  font-size:     0.92rem;
+  line-height:   1.5;
+  margin-bottom: 1.5rem;
+}
+
+/* Botão confirmar (remover) */
+.btn-confirmar {
+  background:     var(--danger);
+  border:         none;
+  color:          #fff;
+  font-family:    'Bebas Neue', sans-serif;
+  font-size:      1rem;
+  letter-spacing: 0.07em;
+  padding:        0.55rem 1.5rem;
+  border-radius:  7px;
+  cursor:         pointer;
+  transition:     opacity 0.2s;
+}
+
+.btn-confirmar:hover { opacity: 0.82; }
+
+/* Campos de detalhe */
+.detalhe-campo {
+  margin-bottom: 0.85rem;
+}
+
+.detalhe-label {
+  font-size:      0.78rem;
+  color:          var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.detalhe-valor {
+  font-size:   0.97rem;
+  color:       var(--text);
+  margin-top:  0.15rem;
+  line-height: 1.5;
+}
+
+/* ── 9. ANIMAÇÕES ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.88) translateY(20px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0);    }
+}

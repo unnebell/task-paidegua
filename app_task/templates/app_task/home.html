@@ -1,0 +1,188 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Task Pai D'égua</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'app_task/css/style.css' %}">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ══ CABEÇALHO ══ -->
+  <header class="page-title">
+    <h1>Task Pai D'égua</h1>
+  </header>
+
+  <!-- ══ TOPO ══ -->
+  <div class="topo">
+
+    <div class="lado-esquerdo">
+
+      <!-- Pesquisa -->
+      <div class="pesquisa">
+        <input id="campoPesquisa" type="text" placeholder="PESQUISE SUA TAREFA" oninput="filtrarTarefas()">
+        <button>🔍</button>
+      </div>
+
+      <!-- Ações -->
+      <div class="acoes">
+        <button onclick="abrirModalAdicionar()">ADICIONAR TAREFA</button>
+      </div>
+
+    </div>
+
+    <!-- Calendário interativo -->
+    <div class="calendario">
+
+      <div class="calendario-header">
+        <button class="cal-nav" onclick="mudarMes(-1)">&#8249;</button>
+        <span id="calTitulo"></span>
+        <button class="cal-nav" onclick="mudarMes(1)">&#8250;</button>
+      </div>
+
+      <div class="cal-dias-semana">
+        <span>Dom</span><span>Seg</span><span>Ter</span>
+        <span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span>
+      </div>
+
+      <div class="cal-grid" id="calGrid"></div>
+
+      <div class="cal-rodape">
+        <button class="cal-hoje" onclick="irParaHoje()">Hoje</button>
+        <button class="cal-limpar" onclick="limparFiltroData()">Limpar filtro</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ══ LISTA DE TAREFAS ══ -->
+  <div class="tarefas-box">
+    <h2>TAREFAS</h2>
+    <div id="listaTarefas"></div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════
+     MODAL: ADICIONAR / EDITAR
+════════════════════════════════ -->
+<div class="overlay" id="overlayForm">
+  <div class="modal">
+
+    <button class="fechar-modal" onclick="fecharModal('overlayForm')">✕</button>
+    <div class="modal-titulo" id="modalFormTitulo">ADICIONAR TAREFA</div>
+
+    <div class="form-grupo">
+      <label>TÍTULO *</label>
+      <input id="inputTitulo" type="text" placeholder="Ex: Estudar JavaScript">
+    </div>
+
+    <div class="form-grupo">
+      <label>DESCRIÇÃO</label>
+      <textarea id="inputDescricao" placeholder="Descreva a tarefa..."></textarea>
+    </div>
+
+    <div class="form-grupo">
+      <label>DATA LIMITE *</label>
+      <input id="inputData" type="date">
+    </div>
+
+    <div class="form-grupo">
+      <label>STATUS</label>
+      <select id="inputStatus">
+        <option value="Pendente">Pendente</option>
+        <option value="Em andamento">Em andamento</option>
+        <option value="Concluído">Concluído</option>
+      </select>
+    </div>
+
+    <div class="form-acoes">
+      <button class="btn-cancelar" onclick="fecharModal('overlayForm')">Cancelar</button>
+      <button class="btn-salvar"   onclick="salvarTarefa()">SALVAR</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     MODAL: VER DETALHES
+════════════════════════════════ -->
+<div class="overlay" id="overlayVer">
+  <div class="modal">
+
+    <button class="fechar-modal" onclick="fecharModal('overlayVer')">✕</button>
+    <div class="modal-titulo">DETALHES DA TAREFA</div>
+
+    <div class="detalhe-campo">
+      <div class="detalhe-label">Título</div>
+      <div class="detalhe-valor" id="verTitulo">—</div>
+    </div>
+
+    <div class="detalhe-campo">
+      <div class="detalhe-label">Descrição</div>
+      <div class="detalhe-valor" id="verDescricao">—</div>
+    </div>
+
+    <div class="detalhe-campo">
+      <div class="detalhe-label">Data Limite</div>
+      <div class="detalhe-valor" id="verData">—</div>
+    </div>
+
+    <div class="detalhe-campo">
+      <div class="detalhe-label">Status</div>
+      <div class="detalhe-valor" id="verStatus">—</div>
+    </div>
+
+    <div class="form-acoes">
+      <button class="btn-cancelar" onclick="fecharModal('overlayVer')">Fechar</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     MODAL: CONFIRMAR REMOÇÃO
+════════════════════════════════ -->
+<div class="overlay" id="overlayConfirm">
+  <div class="modal modal--estreito modal--centro">
+
+    <div class="modal-confirm-icone">🗑️</div>
+    <div class="modal-titulo">REMOVER TAREFA</div>
+    <div class="modal-confirm-msg">
+      Tem certeza que deseja remover esta tarefa? Esta ação não pode ser desfeita.
+    </div>
+
+    <div class="form-acoes form-acoes--centro">
+      <button class="btn-cancelar"  onclick="fecharModal('overlayConfirm')">Cancelar</button>
+      <button class="btn-confirmar" onclick="confirmarRemocao()">REMOVER</button>
+    </div>
+
+  </div>
+</div>
+
+<!-- ════════════════════════════════
+     MODAL: SUCESSO
+════════════════════════════════ -->
+<div class="overlay" id="overlaySucesso">
+  <div class="modal modal--mini modal--centro">
+
+    <div class="modal-confirm-icone" id="sucessoIcone">✅</div>
+    <div class="modal-titulo"        id="sucessoTitulo">PRONTO!</div>
+    <div class="modal-confirm-msg"   id="sucessoMsg">Operação realizada com sucesso.</div>
+
+    <div class="form-acoes form-acoes--centro">
+      <button class="btn-salvar btn-salvar--largo" onclick="fecharModal('overlaySucesso')">OK</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="{% static 'app_task/js/script.js' %}"></script>
+</body>
+</html>

@@ -64,6 +64,96 @@ body {
   background-clip:         text;
 }
 
+.page-title {
+  display:        flex;
+  align-items:    center;
+  justify-content: space-between;
+  flex-wrap:      wrap;
+  gap:            1rem;
+}
+
+/* Variante para páginas de autenticação: centraliza o título quando necessário */
+.page-title--center {
+  justify-content: center;
+  text-align: center;
+}
+
+.user-actions {
+  display:        flex;
+  align-items:    center;
+  gap:            0.85rem;
+}
+
+.user-actions span {
+  color:          var(--muted);
+  font-size:      0.95rem;
+  letter-spacing: 0.04em;
+}
+
+.btn-logout {
+  background:     transparent;
+  border:         1px solid var(--border);
+  color:          var(--text);
+  font-family:    'DM Sans', sans-serif;
+  font-size:      0.82rem;
+  padding:        0.55rem 1rem;
+  border-radius:  8px;
+  cursor:         pointer;
+  transition:     border-color 0.2s, color 0.2s;
+}
+
+.btn-logout:hover {
+  border-color: var(--accent);
+  color:       var(--accent);
+}
+
+.form-page {
+  display:        flex;
+  justify-content: center;
+  padding:        2rem 0;
+}
+
+.auth-box {
+  width:          100%;
+  max-width:      420px;
+  background:     var(--surface);
+  border:         1px solid var(--border);
+  border-radius:  var(--radius);
+  padding:        2rem;
+}
+
+.auth-box h2 {
+  font-family:    'Bebas Neue', sans-serif;
+  font-size:      2rem;
+  letter-spacing: 0.08em;
+  color:          var(--accent);
+  margin-bottom:  1rem;
+}
+
+.auth-error {
+  background:     rgba(232, 69, 69, 0.12);
+  border:         1px solid rgba(232, 69, 69, 0.2);
+  color:          var(--danger);
+  border-radius:  10px;
+  padding:        0.85rem 1rem;
+  margin-bottom:  1rem;
+}
+
+.auth-footer {
+  margin-top:     1rem;
+  font-size:      0.9rem;
+  color:          var(--muted);
+}
+
+.auth-footer a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.auth-actions {
+  justify-content: center;
+}
+
 /* ── 4. TOPO ── */
 .topo {
   display:       flex;
@@ -250,6 +340,7 @@ body {
   border:        1px solid var(--border);
   border-radius: var(--radius);
   padding:       1.5rem;
+  margin-bottom: 2rem;
 }
 
 .tarefas-box h2 {
@@ -274,6 +365,7 @@ body {
   position:      relative;
   transition:    border-color 0.2s, transform 0.15s;
   animation:     slideIn 0.3s ease;
+  margin-bottom: 0.5rem;
 }
 
 .tarefa:hover {
@@ -456,6 +548,11 @@ body {
 }
 
 .form-acoes--centro {
+  justify-content: center;
+}
+
+/* Força centralização quando usada junto com .auth-actions (login/registro) */
+.form-acoes.auth-actions {
   justify-content: center;
 }
 

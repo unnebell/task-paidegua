@@ -1,0 +1,55 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro — Task Pai D'égua</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'app_task/css/style.css' %}">
+</head>
+<body>
+
+<div class="container">
+  <header class="page-title page-title--center">
+    <h1>Task Pai D'égua</h1>
+  </header>
+
+  <div class="form-page">
+    <div class="auth-box">
+      <h2>Criar conta</h2>
+      {% if erro %}
+      <div class="auth-error">{{ erro }}</div>
+      {% endif %}
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-grupo">
+          <label>Nome</label>
+          <input type="text" name="nome" placeholder="Digite seu nome" required>
+        </div>
+        <div class="form-grupo">
+          <label>E-mail</label>
+          <input type="email" name="email" placeholder="Digite seu e-mail" required>
+        </div>
+        <div class="form-grupo">
+          <label>Senha</label>
+          <input type="password" name="senha" placeholder="Digite uma senha" required>
+        </div>
+        <div class="form-grupo">
+          <label>Confirmação de senha</label>
+          <input type="password" name="confirmar_senha" placeholder="Repita a senha" required>
+        </div>
+        <div class="form-acoes auth-actions">
+          <button class="btn-salvar" type="submit">REGISTRAR</button>
+        </div>
+      </form>
+      <p class="auth-footer">
+        Já tem conta? <a href="{% url 'login' %}">Faça login aqui</a>.
+      </p>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

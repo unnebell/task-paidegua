@@ -16,6 +16,10 @@
   <!-- ══ CABEÇALHO ══ -->
   <header class="page-title">
     <h1>Task Pai D'égua</h1>
+    <div class="user-actions">
+      <span>Olá, {{ usuario_nome }}</span>
+      <button class="btn-logout" onclick="location.href='{% url 'logout' %}'">SAIR</button>
+    </div>
   </header>
 
   <!-- ══ TOPO ══ -->
@@ -65,6 +69,12 @@
   <div class="tarefas-box">
     <h2>TAREFAS</h2>
     <div id="listaTarefas"></div>
+  </div>
+
+  <!-- ══ LISTA DE TAREFAS CONCLUÍDAS ══ -->
+  <div class="tarefas-box">
+    <h2>TAREFAS CONCLUÍDAS</h2>
+    <div id="listaTarefasConcluidas"></div>
   </div>
 
 </div>
